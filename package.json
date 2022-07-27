@@ -84,6 +84,7 @@
 		"plugins": "yarn run plugin:adblocker",
 		"plugin:adblocker": "rimraf plugins/adblocker/ad-blocker-engine.bin && node plugins/adblocker/blocker.js",
 		"release:linux": "yarn run clean && electron-builder --linux -p always -c.snap.publish=github",
+		"release:linux:snapcraft": "yarn run clean && electron-builder --linux -p always -c.snap.publish=snap -c.linux.target=snap",
 		"release:mac": "yarn run clean && electron-builder --mac -p always",
 		"release:win": "yarn run clean && electron-builder --win -p always"
 	},
