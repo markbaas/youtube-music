@@ -4,6 +4,7 @@ on:
   push:
     tags:
       - '*'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -34,11 +35,12 @@ jobs:
 
       - name: Install dependencies
         run: yarn install
-      - name: Build package
-        run:  node_modules/.bin/electron-builder --linux -p always -c.linux.target=snap
 
       - name: Install snapcraft
         run: sudo snap install snapcraft --classic
+
+      - name: Build package
+        run:  node_modules/.bin/electron-builder --linux -p always -c.linux.target=snap
 
       - name: Publish to snapcraft
         env:
