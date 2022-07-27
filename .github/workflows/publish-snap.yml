@@ -42,4 +42,4 @@ jobs:
       - name: Publish to snapcraft
         env:
           SNAPCRAFT_STORE_CREDENTIALS =: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        run: node_modules/.bin/electron-builder --linux -p always -c.snap.publish=snapcraft -c.linux.target=snap
+        run: node_modules/.bin/electron-builder --linux -p always -c.snap.publish=snap -c.linux.target=snap
