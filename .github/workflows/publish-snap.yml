@@ -39,10 +39,7 @@ jobs:
       - name: Install snapcraft
         run: sudo snap install snapcraft --classic
 
-      - name: Build package
-        run:  node_modules/.bin/electron-builder --linux -p always -c.linux.target=snap
-
       - name: Publish to snapcraft
         env:
-          SNAPCRAFT_STORE_CREDENTIALS=: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
-        run: electron-builder --linux -p always -c.snap.publish=snapcraft -c.linux.target=snap
+          SNAPCRAFT_STORE_CREDENTIALS =: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        run: node_modules/.bin/electron-builder --linux -p always -c.snap.publish=snapcraft -c.linux.target=snap
