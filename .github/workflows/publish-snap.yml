@@ -1,0 +1,46 @@
+name: Publish to snap store
+
+on:
+  push:
+    tags:
+      - '*'
+
+jobs:
+  build:
+    name: Build snap and publishes to snapcraft
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Setup NodeJS
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16.x"
+
+      - name: Get yarn cache directory path
+        id: yarn-cache-dir-path
+        run: echo "::set-output name=dir::$(yarn cache dir)"
+
+      - uses: actions/cache@v3
+        id: yarn-cache
+        with:
+          path: ${{ steps.yarn-cache-dir-path.outputs.dir }}
+          key: ${{ runner.os }}-yarn-${{ hashFiles('**/yarn.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-yarn-
+
+      - name: Install dependencies
+        run: yarn --frozen-lockfile
+
+      - name: Install dependencies
+        run: yarn install
+      - name: Build package
+        run:  node_modules/.bin/electron-builder --linux -p always -c.linux.target=snap
+
+      - name: Install snapcraft
+        run: sudo snap install snapcraft --classic
+
+      - name: Publish to snapcraft
+        env:
+          SNAPCRAFT_STORE_CREDENTIALS=: ${{ secrets.SNAPCRAFT_STORE_CREDENTIALS }}
+        run: electron-builder --linux -p always -c.snap.publish=snapcraft -c.linux.target=snap
